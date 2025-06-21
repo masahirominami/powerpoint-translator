@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import (
     QApplication, QWidget, QLabel, QLineEdit, QPushButton,
     QVBoxLayout, QFileDialog, QMessageBox
 )
+from PyQt5.QtCore import Qt
 from pptx_handler import translate_text_in_place
 
 class TranslatorApp(QWidget):
@@ -23,6 +24,8 @@ class TranslatorApp(QWidget):
 
         self.output_label = QLabel("Save translated file as:")
         self.output_path = QLineEdit()
+        output_browse_btn = QPushButton("Browse")
+        output_browse_btn.clicked.connect(self.browse_output_file)
 
         self.lang_label = QLabel("Enter target language code (e.g. ja, fr, es):")
         self.lang_input = QLineEdit()
@@ -36,6 +39,7 @@ class TranslatorApp(QWidget):
 
         layout.addWidget(self.output_label)
         layout.addWidget(self.output_path)
+        layout.addWidget(output_browse_btn)
 
         layout.addWidget(self.lang_label)
         layout.addWidget(self.lang_input)
@@ -47,6 +51,13 @@ class TranslatorApp(QWidget):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select PowerPoint File", "", "PowerPoint Files (*.pptx)")
         if file_path:
             self.input_path.setText(file_path)
+
+    def browse_output_file(self):
+        file_path, _ = QFileDialog.getSaveFileName(self, "Save Translated File As", "", "PowerPoint Files (*.pptx)")
+        if file_path:
+            if not file_path.lower().endswith(".pptx"):
+                file_path += ".pptx"
+            self.output_path.setText(file_path)
 
     def translate(self):
         input_file = self.input_path.text().strip()
