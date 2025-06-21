@@ -11,3 +11,4 @@ soupsieve==2.7
 typing_extensions==4.14.0
 urllib3==2.5.0
 xlsxwriter==3.2.5
+deep-translator

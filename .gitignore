@@ -1,0 +1,58 @@
+# vim
+*.sw*
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual environments
+venv/
+.env/
+env/
+.venv/
+
+# PyInstaller
+*.spec
+dist/
+build/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Test and coverage reports
+.coverage
+.tox/
+.nox/
+coverage.xml
+htmlcov/
+
+# Pytest cache
+.pytest_cache/
+
+# mypy / pylint / flake8
+.mypy_cache/
+.dmypy.json
+.pyre/
+.pytype/
+
+# Logs and local settings
+*.log
+*.pot
+*.mo
+*.sqlite3
+*.db
+*.pem
+
+# VSCode and other IDE config
+.vscode/
+.idea/
+
+# Mac / Linux / Windows system files
+.DS_Store
+Thumbs.db
+
+sample/
