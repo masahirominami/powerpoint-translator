@@ -1,7 +1,6 @@
 # main.py
 
 import os
-from pptx_handler import generate_translated_pptx
 from pptx_handler import translate_text_in_place
 
 def is_valid_pptx(path):
