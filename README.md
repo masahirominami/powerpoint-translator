@@ -2,6 +2,8 @@
 
 This cross-platform desktop application allows users to **translate the text inside PowerPoint `.pptx` files** into any target language — without altering slide layouts, images, or formatting. It uses a simple **PyQt5 GUI** to streamline the process and supports in-place translation to preserve visual fidelity.
 
+**Most of this program was done by Microsoft Copilot.**
+
 ---
 
 ## ⚙️ Technical Requirements
@@ -25,18 +27,26 @@ pip install python-pptx deep-translator PyQt5
 
 ## 📁 Project Structure
 
-| File / Folder       | Description                                           |
-|---------------------|-------------------------------------------------------|
-| `main.py`           | Command-line interface for running the translator     |
-| `gui.py`            | PyQt5-based graphical user interface                  |
-| `pptx_handler.py`   | Handles PowerPoint file parsing and in-place editing  |
-| `translator.py`     | Wraps the translation logic using deep-translator     |
-| `requirements.txt`  | Lists all Python dependencies                         |
-| `.gitignore`        | Excludes virtual envs, caches, and OS-generated files |
-| `README.md`         | This file: overview and instructions                  |
+| File / Folder            | Description                                           |
+|--------------------------|-------------------------------------------------------|
+| config_loader.py         | Loads forbidden keywords from the config file         |
+| config.yaml.sample       | Sample config                                         |
+| gui.py                   | PyQt-based GUI logic, entry point for GUI             |
+| instructions.md          | Copilot output for creating this project              |
+| main.py                  | Entry point for CLI-based translation execution       |
+| pptx_handler.py          | Handles PowerPoint generation and layout logic        |
+| preview_dialog.py        | Displays extracted text for preview/edit              |
+| scan_forbidden_chars.py  | Scans for forbidden terms before translation          |
+| translator.py            | Wraps the translation logic using deep-translator     |
+| requirements.txt         | Lists required Python packages with pinned versions   |
+| .gitignore               | Excludes virtual envs, caches, and OS-generated files |
+| README.md                | This file: overview, usage instructions               |
 
 
 ## 🚀 Usage`
+
+### Prerequisites:
+Prepare config.yaml of your project, where you define forbidden keywords and translation settings.
 
 ### Option 1: Using the GUI (recommended)
 

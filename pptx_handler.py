@@ -20,7 +20,8 @@ def extract_text_from_pptx(file_path):
 
 # translate_text_in_place translates text in a PowerPoint file and saves it to
 # a new file
-def translate_text_in_place(pptx_path, output_path, target_lang):
+def translate_text_in_place(pptx_path, output_path, target_lang,
+                            forbidden_keywords):
     from translator import translate_text
     prs = Presentation(pptx_path)
 
@@ -30,7 +31,9 @@ def translate_text_in_place(pptx_path, output_path, target_lang):
                 for paragraph in shape.text_frame.paragraphs:
                     for run in paragraph.runs:
                         original_text = run.text
-                        translated_text = translate_text(original_text, target_lang)
+                        translated_text = translate_text(original_text,
+                                                         target_lang,
+                                                         forbidden_keywords)
                         run.text = translated_text  # ✅ preserves font style
 
 

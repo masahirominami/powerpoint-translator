@@ -13,4 +13,4 @@ urllib3==2.5.0
 xlsxwriter==3.2.5
 deep-translator==1.11.4
 PyQt5==5.15.9
-
+PyYAML==6.0.2

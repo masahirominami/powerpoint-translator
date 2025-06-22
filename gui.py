@@ -9,12 +9,14 @@ from PyQt5.QtCore import Qt
 from pptx_handler import translate_text_in_place
 from pptx_handler import extract_text_from_pptx
 from preview_dialog import TextPreviewDialog  # If you save it in a separate file
+from config_loader import load_config  # Assuming you have a config_loader module
 
 class TranslatorApp(QWidget):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("PowerPoint Translator")
         self.setup_ui()
+        self.setup_forbidden_keywords()
 
     def setup_ui(self):
         layout = QVBoxLayout()
@@ -57,6 +59,15 @@ class TranslatorApp(QWidget):
 
         self.setLayout(layout)
 
+    def setup_forbidden_keywords(self):
+        from config_loader import load_config
+
+        # This method can be used to set up any forbidden keywords or characters
+        # For now, we will just initialize an empty list
+        # Load from config
+        config = load_config()
+        self.forbidden_keywords = set(word.lower() for word in config.get("forbidden_keywords", []))
+
     def browse_file(self):
         file_path, _ = QFileDialog.getOpenFileName(self, "Select PowerPoint File", "", "PowerPoint Files (*.pptx)")
         if file_path:
@@ -86,19 +97,40 @@ class TranslatorApp(QWidget):
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to extract text:\n{e}")
 
+    def scan_for_forbidden_chars(self):
+        input_file = self.input_path.text().strip()
+        if not input_file:
+            QMessageBox.warning(self, "Missing File", "Please select a PowerPoint file to preview.")
+            return False
+
+        try:
+            extracted_text = extract_text_from_pptx(input_file)  # Just extract text without translation
+            if any(keyword.lower() in extracted_text.lower() for keyword in
+                   self.forbidden_keywords):
+                QMessageBox.warning(self, "Forbidden Keywords Found",
+                                    "This document contains protected keywords and cannot be translated.")
+                return True
+
+        except Exception as e:
+            QMessageBox.critical(self, "Error", f"Failed to extract text:\n{e}")
+
     def translate(self):
         input_file = self.input_path.text().strip()
         output_file = self.output_path.text().strip()
         target_lang = self.lang_input.text().strip()
 
         if not input_file or not output_file or not target_lang:
-            QMessageBox.warning(self, "Missing Info", "Please fill in all
-                                fields and preview first.")
+            QMessageBox.warning(self, "Missing Info", "Please fill in all fields and preview first.")
+            return
+
+        # Check if the file contains forbidden keywords
+        if self.scan_for_forbidden_chars():
             return
 
         QApplication.setOverrideCursor(Qt.WaitCursor)  # 👈 Show busy cursor
         try:
-            translate_text_in_place(input_file, output_file, target_lang)
+            translate_text_in_place(input_file, output_file, target_lang,
+                                    self.forbidden_keywords)
             QMessageBox.information(self, "Success", f"Translation completed!\nSaved to:\n{output_file}")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Translation failed:\n{e}")
