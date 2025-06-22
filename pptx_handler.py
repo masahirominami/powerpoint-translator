@@ -2,6 +2,24 @@
 from pptx import Presentation
 from copy import deepcopy
 
+from pptx import Presentation
+
+# extract_text_from_pptx extracts all text from a PowerPoint file
+def extract_text_from_pptx(file_path):
+    prs = Presentation(file_path)
+    collected = []
+
+    for idx, slide in enumerate(prs.slides, start=1):
+        collected.append(f"--- Slide {idx} ---")
+        for shape in slide.shapes:
+            if hasattr(shape, "text") and shape.text.strip():
+                collected.append(shape.text.strip())
+        collected.append("")  # Add spacing between slides
+
+    return "\n".join(collected)
+
+# translate_text_in_place translates text in a PowerPoint file and saves it to
+# a new file
 def translate_text_in_place(pptx_path, output_path, target_lang):
     from translator import translate_text
     prs = Presentation(pptx_path)
